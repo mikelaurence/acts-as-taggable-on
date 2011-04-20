@@ -204,7 +204,7 @@ module ActsAsTaggableOn::Taggable
       ##
       # Returns all tags that are not owned of a given context
       def tags_on(context)
-        base_tags.where(["#{ActsAsTaggableOn::Tagging.table_name}.context = ? AND #{ActsAsTaggableOn::Tagging.table_name}.tagger_id IS NULL", context.to_s]).all
+        base_tags.where(["#{ActsAsTaggableOn::Tagging.table_name}.context #{context.is_a?(Array) ? 'IN (?)' : '= ?'} AND #{ActsAsTaggableOn::Tagging.table_name}.tagger_id IS NULL", context.is_a?(Array) ? context : context.to_s]).all
       end
 
       def set_tag_list_on(context, new_list)
